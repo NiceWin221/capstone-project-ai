@@ -366,13 +366,18 @@ with tab1:
         st.markdown('<div class="sub-title">Perbandingan Performansi & Evaluasi</div>', unsafe_allow_html=True)
         
         # Comparative Table
+        astar_cost = sum(get_move_cost((r, c) in obstacles, weather) for r, c in astar_path) if astar_path else 0
         perf_data = {
             "Metrik": ["Node Dieksplorasi", "Panjang Jalur (Langkah)", "Estimasi Total Biaya"],
-            "BFS (Pencarian Buta)": [bfs_explored, len(bfs_path), len(bfs_path)],
+            "BFS (Pencarian Buta)": [
+                f"{int(bfs_explored)}",
+                f"{int(len(bfs_path))}",
+                f"{float(len(bfs_path)):.1f}"
+            ],
             "A* Search (Berpetunjuk)": [
-                astar_explored, 
-                len(astar_path), 
-                sum(get_move_cost((r, c) in obstacles, weather) for r, c in astar_path) if astar_path else 0
+                f"{int(astar_explored)}", 
+                f"{int(len(astar_path))}", 
+                f"{float(astar_cost):.1f}"
             ]
         }
         st.table(pd.DataFrame(perf_data))
